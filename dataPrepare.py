@@ -5,11 +5,18 @@ from sklearn.model_selection import train_test_split
 categorical_cols = ['Id', 'groupId', 'matchId', 'matchType']
 target='winPlacePerc'
 
-def getTestData(size=None):
+def getValidData(size=None):
     dfx = pd.read_csv("trainSmall1.csv")
     dfx = dfx.dropna()
     if size is not None:
-        dfx = dfx.iloc[150000:150000+size]
+        dfx = dfx.iloc[210000:210000+size]
+    return dfx
+
+def getTestData(size=None):
+    dfx = pd.read_csv("localTest.csv")
+    dfx = dfx.dropna()
+    if size is not None:
+        dfx = dfx.head(size)#dfx = dfx.iloc[210000:210000+size]
     return dfx
 def getData(size=None):
     dfx = pd.read_csv("trainSmall1.csv")
@@ -45,7 +52,7 @@ def standardize(df, mean=None, std = None, ret_mean_std = False):
         mean = df.mean()
     if std is None:
         std = df.std()
-    df = (df-mean)/std
+    df = (df-mean)/(std+0.0001)
     df = df.fillna(value=0.0)
     if ret_mean_std:
         return df, mean, std

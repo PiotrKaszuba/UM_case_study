@@ -43,11 +43,11 @@ for column in x_train.columns:
 x_train, mean, std = dp.standardize(x_train, ret_mean_std=True)
 x_test = dp.standardize(x_test, mean, std)
 #x_test = x_test.dropna()
-# pca = PCA(n_components=len(x_train.columns)-10)
-# x_train = pca.fit_transform(x_train)
-# x_train = pd.DataFrame(data = x_train)
-# x_test = pca.transform(x_test)
-# x_test = pd.DataFrame(data = x_test)
+pca = PCA(n_components=len(x_train.columns)-25)
+x_train = pca.fit_transform(x_train)
+x_train = pd.DataFrame(data = x_train)
+x_test = pca.transform(x_test)
+x_test = pd.DataFrame(data = x_test)
 print(x_train.columns)
 # pca = PCA().fit(x_train)
 # #(https://towardsdatascience.com/an-approach-to-choosing-the-number-of-components-in-a-principal-component-analysis-pca-3b9f3d6e73fe)
@@ -64,12 +64,12 @@ print(x_train.columns)
 #
 # plt.xticks( list(range(1,len(x_train.columns)+1,3)))
 # plt.show()
-# poly = PolynomialFeatures(degree=2)
-# x_train2 = poly.fit_transform(x_train)
-# x_test = pd.DataFrame(poly.fit_transform(x_test))
+poly = PolynomialFeatures(degree=2)
+x_train = poly.fit_transform(x_train)
+x_test = pd.DataFrame(poly.fit_transform(x_test))
 
-for column in x_train.columns:
-    x_train
+
+
 
 
 

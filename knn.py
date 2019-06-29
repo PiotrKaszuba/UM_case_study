@@ -1,7 +1,8 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler,scale
 from sklearn import neighbors
-from sklearn.metrics import mean_absolute_error, r2_score
+import math
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.ensemble import VotingRegressor
@@ -64,11 +65,11 @@ y_test = testDf[target]
 x_train, mean, std = dp.standardize(x_train, ret_mean_std=True)
 x_test = dp.standardize(x_test, mean, std)
 #
-# pca = PCA(n_components=len(df.columns)-1)
-# x_train = pca.fit_transform(x_train)
-# x_train = pd.DataFrame(data = x_train)
-# x_test = pca.transform(x_test)
-# x_test = pd.DataFrame(data = x_test)
+pca = PCA(n_components=len(df.columns)-3)
+x_train = pca.fit_transform(x_train)
+x_train = pd.DataFrame(data = x_train)
+x_test = pca.transform(x_test)
+x_test = pd.DataFrame(data = x_test)
 # print(x_train.columns)
 # pca = PCA().fit(x_train)
 # #(https://towardsdatascience.com/an-approach-to-choosing-the-number-of-components-in-a-principal-component-analysis-pca-3b9f3d6e73fe)
@@ -141,3 +142,5 @@ error = mean_absolute_error(y_test,pred) #calculate err
 r2 = r2_score(y_test, pred)
 print('MAE: ', error)
 print('R2: ', r2)
+error_RMSE = math.sqrt(mean_squared_error(y_test,pred)) #calculate err
+print('RMSE value  is:', error_RMSE)

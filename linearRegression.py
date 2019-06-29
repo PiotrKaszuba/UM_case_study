@@ -1,9 +1,9 @@
 from sklearn.linear_model import LinearRegression
-
+import math
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler,scale
 from sklearn import neighbors
-from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.ensemble import VotingRegressor
@@ -22,7 +22,7 @@ target = dp.target
 
 dfx = getFeatures(dfx)
 
-testDf = dp.getValidData(30000)
+testDf = dp.getTestData(30000)
 testDf = getFeatures(testDf)
 df = dfx.drop(columns=dp.categorical_cols)
 features = list(df.columns)
@@ -43,7 +43,7 @@ for column in x_train.columns:
 x_train, mean, std = dp.standardize(x_train, ret_mean_std=True)
 x_test = dp.standardize(x_test, mean, std)
 #x_test = x_test.dropna()
-pca = PCA(n_components=28)
+pca = PCA(n_components=58)
 x_train = pca.fit_transform(x_train)
 x_train = pd.DataFrame(data = x_train)
 x_test = pca.transform(x_test)
@@ -64,7 +64,7 @@ print(x_train.columns)
 # #
 # plt.xticks( list(range(1,len(x_train.columns)+1,3)))
 # plt.show()
-poly = PolynomialFeatures(degree=3)
+poly = PolynomialFeatures(degree=2)
 x_train = poly.fit_transform(x_train)
 x_test = pd.DataFrame(poly.fit_transform(x_test))
 
@@ -85,3 +85,5 @@ AdjR2 = 1-(1-r2)*(200000-1)/(200000-len(lr.coef_)-1)
 print('AdjR2: ', AdjR2)
 print('MAE: ', error)
 print('R2: ', r2)
+error_RMSE = math.sqrt(mean_squared_error(y_test,pred)) #calculate err
+print('RMSE value  is:', error_RMSE)
